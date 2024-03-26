@@ -50,3 +50,14 @@ model Session {
   ville   String
   Cohorte Cohorte[]
 }
+
+model Coach {
+  id             Int        @id @default(autoincrement())
+  prenom         String
+  nom            String
+  postnom        String
+  date_naissance DateTime
+  adresse        String
+  email          String
+  telephone      String
+}
