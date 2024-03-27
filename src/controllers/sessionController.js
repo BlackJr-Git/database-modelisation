@@ -1,3 +1,7 @@
+const { PrismaClient } = require("@prisma/client");
+
+const { Session } = new PrismaClient();
+
 /*
 --------------------------
 Retrieve one session from 
@@ -29,9 +33,8 @@ async function getAllSessions(req, res, next) {
   const lastIndex = +pages * number;
   const students = "productsData.slice(firstIndex, lastIndex);";
   return res.send(students); */
-  return res.send('OK')
+  return res.send("OK");
 }
-
 
 /*
     --------------------------
@@ -40,6 +43,15 @@ async function getAllSessions(req, res, next) {
     --------------------------
 */
 async function createSession(req, res, next) {
+  const session = req.body;
+  try {
+    const newSession = await Session.create({ data: session });
+    return res.send(newSession)
+  } catch (error) {
+    console.log(error);
+    return res.status(404).res("Les données de votre session sont incompletes"); 
+  }
+
   /* const newStudent = req.body;
   if (newStudent.text) {
     newStudent.id = productsData.length + 1;
