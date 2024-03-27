@@ -6,16 +6,18 @@ the database.
 */
 async function getOneCoach(req, res, next) {
   const { CoachId } = req.params;
-  let coach = findProductById(CoachId);
+  const coach = ''
   if (coach) {
     return res.send(coach);
   }
   return res.status(404).send(`Le coach avec l'id : ${CoachId} n'existe pas`);
 }
 
+
+
 /*
   --------------------------
-  Retrieve all students from 
+  Retrieve all coaches from 
   the database.
   --------------------------
 */
@@ -32,7 +34,7 @@ async function getAllCoaches(req, res, next) {
 
 /*
     --------------------------
-    Create and save a new product
+    Create and save a new coach
     in the database
     --------------------------
 */
@@ -48,7 +50,7 @@ async function createCoach(req, res, next) {
 
 /*
     --------------------------
-    Update a product by the id 
+    Update a coach by the id 
     in the request
     --------------------------
 */
@@ -67,7 +69,7 @@ async function updateCoach(req, res, next) {
 
 /*
     --------------------------
-    Delete a product with 
+    Delete a coach with 
     the specified id 
     in the request
     --------------------------
@@ -88,7 +90,7 @@ async function deleteCoach(req, res, next) {
 
 /*
     --------------------------
-    Delete all products from 
+    Delete all coaches from 
     the database.
     --------------------------
 */

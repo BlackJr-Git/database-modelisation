@@ -18,12 +18,6 @@ const {
   sessionRouter,
 } = require("./src/routes/index");
 
-// import {
-//   authRouter,
-//   roleRouter,
-//   userRouter,
-//   productRouter,
-// } from "./routes/index.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;

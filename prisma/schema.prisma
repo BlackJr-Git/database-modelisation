@@ -41,6 +41,7 @@ model Cohorte {
   sessionId   Int
   description String
   Apprenant   Apprenant[]
+  Affectation    Affectation[]
 }
 
 model Session {
@@ -60,4 +61,13 @@ model Coach {
   adresse        String
   email          String
   telephone      String
+  Affectation    Affectation[]
+}
+
+model Affectation {
+  id             Int        @id @default(autoincrement())
+  coach          Coach      @relation(fields: [coachId], references: [id])
+  coachId        Int
+  cohorte        Cohorte    @relation(fields: [cohorteId], references: [id])
+  cohorteId      Int 
 }
