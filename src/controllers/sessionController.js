@@ -21,19 +21,18 @@ async function getOneSession(req, res, next) {
 
 /*
   --------------------------
-  Retrieve all session from 
+  Retrieve all sessions from 
   the database.
   --------------------------
 */
 async function getAllSessions(req, res, next) {
-  /* let { number, pages } = req.query;
-  pages = pages || 1;
-  number = number || 10;
-  const firstIndex = (+pages - 1) * number;
-  const lastIndex = +pages * number;
-  const students = "productsData.slice(firstIndex, lastIndex);";
-  return res.send(students); */
-  return res.send("OK");
+  try {
+    const sessions = await Session.findMany();
+    return res.status(200).send(sessions);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).res("erreur lors de la lectures de vos donnees");
+  }
 }
 
 /*
@@ -46,19 +45,11 @@ async function createSession(req, res, next) {
   const session = req.body;
   try {
     const newSession = await Session.create({ data: session });
-    return res.send(newSession)
+    return res.send(newSession);
   } catch (error) {
     console.log(error);
-    return res.status(404).res("Les données de votre session sont incompletes"); 
+    return res.status(404).res("Les données de votre session sont incompletes");
   }
-
-  /* const newStudent = req.body;
-  if (newStudent.text) {
-    newStudent.id = productsData.length + 1;
-    productsData.push(newStudent);
-    return res.status(201).send(productsData[productsData.length - 1]);
-  }
-  return res.status(404).res("Les donnée de votre apprenant sont incomplete"); */
 }
 
 /*
