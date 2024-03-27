@@ -1,14 +1,14 @@
-// import cors from "cors";
 const cors = require("cors");
+const dotenv = require("dotenv");
 const express = require("express");
-const { json }  = require('express')
-// import { json } from "express";
-// import {
-//   authBaseURI,
-//   rolesBaseURI,
-//   usersBaseURI,
-//   productBaseURI,
-// } from "./config/paths.js";
+const { json } = require("express");
+const {
+  apprenantsBaseURI,
+  coachesBaseURI,
+  machinesBaseURI,
+  cohortesBaseURI,
+  sessionsBaseURI,
+} = require("./src/config/path");
 
 // import {
 //   authRouter,
