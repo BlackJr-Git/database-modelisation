@@ -14,16 +14,16 @@ const {
 sessionRouter.get(`/`, getAllSessions);
 
 // get one session by sessionId
-sessionRouter.get(`/:coachId`, getOneSession);
+sessionRouter.get(`/:sessionId`, getOneSession);
 
 //Create a new session
 sessionRouter.post(`/add`, createSession);
-
+ 
 //Update session by sessionId
-sessionRouter.put(`/update/:coachId`, updateSession);
+sessionRouter.put(`/update/:sessionId`, updateSession);
 
 //Delete session by sessionId
-sessionRouter.delete(`/delete/:coachId`, deleteSession);
+sessionRouter.delete(`/delete/:sessionId`, deleteSession);
 
 //Delete all sessions
 sessionRouter.delete(`/delete`, deleteAllSessions);

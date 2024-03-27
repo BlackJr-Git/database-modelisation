@@ -9,20 +9,24 @@ the database.
 --------------------------
 */
 async function getOneSession(req, res, next) {
-  const { SessionId } = req.params;
-    try {
-      const session = await Session.findUnique({where : {id: SessionId}});
+  const { sessionId } = req.params;
+  try {
+    const session = await Session.findUnique({
+      where: {
+        id: +sessionId,
+      },
+    });
 
-      if (session) {
-        return res.send(session);
-      }
-      return res
-        .status(404)
-        .send(`La session avec l'id : ${SessionId} n'existe pas`);
-    } catch (error) {
-      console.log(error);
-      return res.status(404).res("erreur lors de la lectures de vos donnees");
+    if (session) {
+      return res.send(session);
     }
+    return res
+      .status(404)
+      .send(`La session avec l'id : ${sessionId} n'existe pas`);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("erreur lors de la lecture de vos données");
+  }
 }
 
 /*
@@ -37,7 +41,7 @@ async function getAllSessions(req, res, next) {
     return res.status(200).send(sessions);
   } catch (error) {
     console.log(error);
-    return res.status(404).res("erreur lors de la lectures de vos donnees");
+    return res.status(404).send("erreur lors de la lectures de vos donnees");
   }
 }
 
@@ -54,7 +58,9 @@ async function createSession(req, res, next) {
     return res.send(newSession);
   } catch (error) {
     console.log(error);
-    return res.status(404).res("Les données de votre session sont incompletes");
+    return res
+      .status(404)
+      .send("Les données de votre session sont incompletes");
   }
 }
 
@@ -65,16 +71,27 @@ async function createSession(req, res, next) {
     --------------------------
 */
 async function updateSession(req, res, next) {
-  /* const product = req.body;
-  const { ProductId } = req.params;
-  const ProductIndex = findProductIndex(ProductId);
-  if (ProductIndex < 0) {
-    productsData.push(product);
-    return res.status(201).send(productsData[productsData.length - 1]);
-  } else {
-    productsData[ProductIndex] = product;
-    return res.status(200).send(productsData[ProductIndex]);
-  } */
+  const { sessionId } = req.params;
+  try {
+    const updateSession = await Session.update({
+      where: {
+        id: +sessionId,
+      },
+      data: {
+        type: "courte",
+      },
+    });
+
+    if (updateSession.id) {
+      return res.status(201).send(updateSession);
+    }
+    return res
+      .status(404)
+      .send(`La session avec l'id : ${sessionId} n'existe pas`);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Erreur lors de la modifiacation des donnes");
+  }
 }
 
 /*
@@ -85,17 +102,34 @@ async function updateSession(req, res, next) {
     --------------------------
 */
 async function deleteSession(req, res, next) {
-  /* const { ProductId } = req.params;
-  const productIndex = findProductIndex(ProductId);
-  const product = findProductById(ProductId);
-  if (productIndex < 0) {
+  const { sessionId } = req.params;
+
+  try {
+    const deleteSession = await Session.delete({
+      where: {
+        id: +sessionId,
+      },
+    });
+
+    if (deleteSession.id) {
+      return res.status(200).send(deleteSession);
+    }
+
     return res
       .status(404)
-      .send(`L'article avec l'id ${ProductId} n'existe pas`);
-  } else {
-    productsData.splice(productIndex, 1);
-    return res.status(202).send(product);
-  } */
+      .send(`La session avec l'id : ${sessionId} n'existe pas`);
+  } catch (error) {
+    if (error.code === "P2025") {
+      return res
+        .status(404)
+        .send(`La session avec l'id ${sessionId}  n'a pas été trouvée.`);
+    } else {
+      console.error(error);
+      return res
+        .status(500)
+        .send("Une erreur est survenue lors de la suppression de la session.");
+    }
+  }
 }
 
 /*
@@ -105,8 +139,14 @@ async function deleteSession(req, res, next) {
     --------------------------
 */
 async function deleteAllSessions(req, res, next) {
-  /* productsData = [];
-  return res.send("All Products have been deleted"); */
+  try {
+    const deleteSessions = await Session.deleteMany({});
+
+    return res.status(200).send(deleteSessions);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Erreur lors de la supression des donnees");
+  }
 }
 
 module.exports = {
