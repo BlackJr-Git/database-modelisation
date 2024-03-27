@@ -10,13 +10,19 @@ the database.
 */
 async function getOneSession(req, res, next) {
   const { SessionId } = req.params;
-  let session = findProductById(SessionId);
-  if (session) {
-    return res.send(session);
-  }
-  return res
-    .status(404)
-    .send(`La session avec l'id : ${SessionId} n'existe pas`);
+    try {
+      const session = await Session.findUnique({where : {id: SessionId}});
+
+      if (session) {
+        return res.send(session);
+      }
+      return res
+        .status(404)
+        .send(`La session avec l'id : ${SessionId} n'existe pas`);
+    } catch (error) {
+      console.log(error);
+      return res.status(404).res("erreur lors de la lectures de vos donnees");
+    }
 }
 
 /*
