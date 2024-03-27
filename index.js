@@ -10,6 +10,14 @@ const {
   sessionsBaseURI,
 } = require("./src/config/path");
 
+const {
+  studentRouter,
+  coachRouter,
+  machineRouter,
+  cohorteRouter,
+  sessionRouter,
+} = require("./src/routes/index");
+
 // import {
 //   authRouter,
 //   roleRouter,
@@ -22,17 +30,18 @@ const PORT = process.env.PORT || 3000;
 const corsOptions = {
   origin: [`http://localhost:${PORT}`, "*"],
 };
-// dotenv.config();
+dotenv.config();
 
 // Config
 app.use(json());
 app.use(cors());
 
 // Routes
-// app.use(authBaseURI, authRouter);
-// app.use(rolesBaseURI, roleRouter);
-// app.use(usersBaseURI, userRouter);
-// app.use(productBaseURI, productRouter);
+app.use(cohortesBaseURI, cohorteRouter);
+app.use(machinesBaseURI, machineRouter);
+app.use(sessionsBaseURI, sessionRouter);
+app.use(coachesBaseURI, coachRouter);
+app.use(apprenantsBaseURI, studentRouter);
 
 app.listen(PORT, () => {
   console.log(`The server listens on http://localhost:${PORT}`);

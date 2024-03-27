@@ -1,18 +1,18 @@
 /*
 --------------------------
-Retrieve one student from 
+Retrieve one cohorte from 
 the database.
 --------------------------
 */
-async function getOneStudent(req, res, next) {
-  const { StudentId } = req.params;
-  let student = "findProductById(StudentId)";
-  if (student) {
-    return res.send(student);
+async function getOneCohorte(req, res, next) {
+  const { CohorteId } = req.params;
+  let cohorte = findProductById(CohorteId);
+  if (cohorte) {
+    return res.send(cohorte);
   }
   return res
     .status(404)
-    .send(`L'apprenant avec l'id : ${StudentId} n'existe pas`);
+    .send(`La cohorte avec l'id : ${CohorteId} n'existe pas`);
 }
 
 /*
@@ -21,7 +21,7 @@ async function getOneStudent(req, res, next) {
   the database.
   --------------------------
 */
-async function getAllStudents(req, res, next) {
+async function getAllCohortes(req, res, next) {
   /* let { number, pages } = req.query;
   pages = pages || 1;
   number = number || 10;
@@ -29,9 +29,8 @@ async function getAllStudents(req, res, next) {
   const lastIndex = +pages * number;
   const students = "productsData.slice(firstIndex, lastIndex);";
   return res.send(students); */
-  return res.send('OK')
+  return res.send("OK");
 }
-
 
 /*
     --------------------------
@@ -39,7 +38,7 @@ async function getAllStudents(req, res, next) {
     in the database
     --------------------------
 */
-async function createStudent(req, res, next) {
+async function createCohorte(req, res, next) {
   /* const newStudent = req.body;
   if (newStudent.text) {
     newStudent.id = productsData.length + 1;
@@ -55,7 +54,7 @@ async function createStudent(req, res, next) {
     in the request
     --------------------------
 */
-async function updateStudent(req, res, next) {
+async function updateCohorte(req, res, next) {
   /* const product = req.body;
   const { ProductId } = req.params;
   const ProductIndex = findProductIndex(ProductId);
@@ -75,7 +74,7 @@ async function updateStudent(req, res, next) {
     in the request
     --------------------------
 */
-async function deleteStudent(req, res, next) {
+async function deleteCohorte(req, res, next) {
   /* const { ProductId } = req.params;
   const productIndex = findProductIndex(ProductId);
   const product = findProductById(ProductId);
@@ -95,16 +94,16 @@ async function deleteStudent(req, res, next) {
     the database.
     --------------------------
 */
-async function deleteAllStudents(req, res, next) {
+async function deleteAllCohortes(req, res, next) {
   /* productsData = [];
   return res.send("All Products have been deleted"); */
 }
 
 module.exports = {
-  getOneStudent: getOneStudent,
-  getAllStudents: getAllStudents,
-  createStudent: createStudent,
-  updateStudent: updateStudent,
-  deleteStudent: deleteStudent,
-  deleteAllStudents: deleteAllStudents,
+  getOneCohorte: getOneCohorte,
+  getAllCohortes: getAllCohortes,
+  createCohorte: createCohorte,
+  updateCohorte: updateCohorte,
+  deleteCohorte: deleteCohorte,
+  deleteAllCohortes: deleteAllCohortes,
 };

@@ -1,27 +1,27 @@
 /*
 --------------------------
-Retrieve one student from 
+Retrieve one machines from 
 the database.
 --------------------------
 */
-async function getOneStudent(req, res, next) {
-  const { StudentId } = req.params;
-  let student = "findProductById(StudentId)";
-  if (student) {
-    return res.send(student);
+async function getOneMachine(req, res, next) {
+  const { MachineId } = req.params;
+  let machine = findProductById(MachineId);
+  if (machine) {
+    return res.send(machine);
   }
   return res
     .status(404)
-    .send(`L'apprenant avec l'id : ${StudentId} n'existe pas`);
+    .send(`La machine avec l'id : ${MachineId} n'existe pas`);
 }
 
 /*
   --------------------------
-  Retrieve all students from 
+  Retrieve all machines from 
   the database.
   --------------------------
 */
-async function getAllStudents(req, res, next) {
+async function getAllMachines(req, res, next) {
   /* let { number, pages } = req.query;
   pages = pages || 1;
   number = number || 10;
@@ -35,11 +35,11 @@ async function getAllStudents(req, res, next) {
 
 /*
     --------------------------
-    Create and save a new product
+    Create and save a new machines
     in the database
     --------------------------
 */
-async function createStudent(req, res, next) {
+async function createMachine(req, res, next) {
   /* const newStudent = req.body;
   if (newStudent.text) {
     newStudent.id = productsData.length + 1;
@@ -51,11 +51,11 @@ async function createStudent(req, res, next) {
 
 /*
     --------------------------
-    Update a product by the id 
+    Update a machines by the id 
     in the request
     --------------------------
 */
-async function updateStudent(req, res, next) {
+async function updateMachine(req, res, next) {
   /* const product = req.body;
   const { ProductId } = req.params;
   const ProductIndex = findProductIndex(ProductId);
@@ -70,12 +70,12 @@ async function updateStudent(req, res, next) {
 
 /*
     --------------------------
-    Delete a product with 
+    Delete a machines with 
     the specified id 
     in the request
     --------------------------
 */
-async function deleteStudent(req, res, next) {
+async function deleteMachine(req, res, next) {
   /* const { ProductId } = req.params;
   const productIndex = findProductIndex(ProductId);
   const product = findProductById(ProductId);
@@ -91,20 +91,20 @@ async function deleteStudent(req, res, next) {
 
 /*
     --------------------------
-    Delete all products from 
+    Delete all machines from 
     the database.
     --------------------------
 */
-async function deleteAllStudents(req, res, next) {
+async function deleteAllMachines(req, res, next) {
   /* productsData = [];
   return res.send("All Products have been deleted"); */
 }
 
 module.exports = {
-  getOneStudent: getOneStudent,
-  getAllStudents: getAllStudents,
-  createStudent: createStudent,
-  updateStudent: updateStudent,
-  deleteStudent: deleteStudent,
-  deleteAllStudents: deleteAllStudents,
+  getOneMachine: getOneMachine,
+  getAllMachines: getAllMachines,
+  createMachine: createMachine,
+  updateMachine: updateMachine,
+  deleteMachine: deleteMachine,
+  deleteAllMachines: deleteAllMachines,
 };

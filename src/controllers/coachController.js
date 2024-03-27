@@ -1,18 +1,16 @@
 /*
 --------------------------
-Retrieve one student from 
+Retrieve one coach from 
 the database.
 --------------------------
 */
-async function getOneStudent(req, res, next) {
-  const { StudentId } = req.params;
-  let student = "findProductById(StudentId)";
-  if (student) {
-    return res.send(student);
+async function getOneCoach(req, res, next) {
+  const { CoachId } = req.params;
+  let coach = findProductById(CoachId);
+  if (coach) {
+    return res.send(coach);
   }
-  return res
-    .status(404)
-    .send(`L'apprenant avec l'id : ${StudentId} n'existe pas`);
+  return res.status(404).send(`Le coach avec l'id : ${CoachId} n'existe pas`);
 }
 
 /*
@@ -21,7 +19,7 @@ async function getOneStudent(req, res, next) {
   the database.
   --------------------------
 */
-async function getAllStudents(req, res, next) {
+async function getAllCoaches(req, res, next) {
   /* let { number, pages } = req.query;
   pages = pages || 1;
   number = number || 10;
@@ -29,9 +27,8 @@ async function getAllStudents(req, res, next) {
   const lastIndex = +pages * number;
   const students = "productsData.slice(firstIndex, lastIndex);";
   return res.send(students); */
-  return res.send('OK')
+  return res.send("OK");
 }
-
 
 /*
     --------------------------
@@ -39,7 +36,7 @@ async function getAllStudents(req, res, next) {
     in the database
     --------------------------
 */
-async function createStudent(req, res, next) {
+async function createCoach(req, res, next) {
   /* const newStudent = req.body;
   if (newStudent.text) {
     newStudent.id = productsData.length + 1;
@@ -55,7 +52,7 @@ async function createStudent(req, res, next) {
     in the request
     --------------------------
 */
-async function updateStudent(req, res, next) {
+async function updateCoach(req, res, next) {
   /* const product = req.body;
   const { ProductId } = req.params;
   const ProductIndex = findProductIndex(ProductId);
@@ -75,7 +72,7 @@ async function updateStudent(req, res, next) {
     in the request
     --------------------------
 */
-async function deleteStudent(req, res, next) {
+async function deleteCoach(req, res, next) {
   /* const { ProductId } = req.params;
   const productIndex = findProductIndex(ProductId);
   const product = findProductById(ProductId);
@@ -95,16 +92,16 @@ async function deleteStudent(req, res, next) {
     the database.
     --------------------------
 */
-async function deleteAllStudents(req, res, next) {
+async function deleteAllCoaches(req, res, next) {
   /* productsData = [];
   return res.send("All Products have been deleted"); */
 }
 
 module.exports = {
-  getOneStudent: getOneStudent,
-  getAllStudents: getAllStudents,
-  createStudent: createStudent,
-  updateStudent: updateStudent,
-  deleteStudent: deleteStudent,
-  deleteAllStudents: deleteAllStudents,
+  getOneCoach: getOneCoach,
+  getAllCoaches: getAllCoaches,
+  createCoach: createCoach,
+  updateCoach: updateCoach,
+  deleteCoach: deleteCoach,
+  deleteAllCoaches: deleteAllCoaches,
 };

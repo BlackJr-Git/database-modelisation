@@ -1,27 +1,27 @@
 /*
 --------------------------
-Retrieve one student from 
+Retrieve one session from 
 the database.
 --------------------------
 */
-async function getOneStudent(req, res, next) {
-  const { StudentId } = req.params;
-  let student = "findProductById(StudentId)";
-  if (student) {
-    return res.send(student);
+async function getOneSession(req, res, next) {
+  const { SessionId } = req.params;
+  let session = findProductById(SessionId);
+  if (session) {
+    return res.send(session);
   }
   return res
     .status(404)
-    .send(`L'apprenant avec l'id : ${StudentId} n'existe pas`);
+    .send(`La session avec l'id : ${SessionId} n'existe pas`);
 }
 
 /*
   --------------------------
-  Retrieve all students from 
+  Retrieve all session from 
   the database.
   --------------------------
 */
-async function getAllStudents(req, res, next) {
+async function getAllSessions(req, res, next) {
   /* let { number, pages } = req.query;
   pages = pages || 1;
   number = number || 10;
@@ -35,11 +35,11 @@ async function getAllStudents(req, res, next) {
 
 /*
     --------------------------
-    Create and save a new product
+    Create and save a new session
     in the database
     --------------------------
 */
-async function createStudent(req, res, next) {
+async function createSession(req, res, next) {
   /* const newStudent = req.body;
   if (newStudent.text) {
     newStudent.id = productsData.length + 1;
@@ -51,11 +51,11 @@ async function createStudent(req, res, next) {
 
 /*
     --------------------------
-    Update a product by the id 
+    Update a session by the id 
     in the request
     --------------------------
 */
-async function updateStudent(req, res, next) {
+async function updateSession(req, res, next) {
   /* const product = req.body;
   const { ProductId } = req.params;
   const ProductIndex = findProductIndex(ProductId);
@@ -70,12 +70,12 @@ async function updateStudent(req, res, next) {
 
 /*
     --------------------------
-    Delete a product with 
+    Delete a session with 
     the specified id 
     in the request
     --------------------------
 */
-async function deleteStudent(req, res, next) {
+async function deleteSession(req, res, next) {
   /* const { ProductId } = req.params;
   const productIndex = findProductIndex(ProductId);
   const product = findProductById(ProductId);
@@ -91,20 +91,20 @@ async function deleteStudent(req, res, next) {
 
 /*
     --------------------------
-    Delete all products from 
+    Delete all session from 
     the database.
     --------------------------
 */
-async function deleteAllStudents(req, res, next) {
+async function deleteAllSessions(req, res, next) {
   /* productsData = [];
   return res.send("All Products have been deleted"); */
 }
 
 module.exports = {
-  getOneStudent: getOneStudent,
-  getAllStudents: getAllStudents,
-  createStudent: createStudent,
-  updateStudent: updateStudent,
-  deleteStudent: deleteStudent,
-  deleteAllStudents: deleteAllStudents,
+  getOneSession: getOneSession,
+  getAllSessions: getAllSessions,
+  createSession: createSession,
+  updateSession: updateSession,
+  deleteSession: deleteSession,
+  deleteAllSessions: deleteAllSessions,
 };
