@@ -11,3 +11,4 @@ module.exports = {
   cohortesBaseURI: cohortesBaseURI,
   sessionsBaseURI: sessionsBaseURI,
 };
+

@@ -14,16 +14,16 @@ const {
 cohorteRouter.get(`/`, getAllCohortes);
 
 // get one coach by cohorteId
-cohorteRouter.get(`/:coachId`, getOneCohorte);
+cohorteRouter.get(`/:cohorteId`, getOneCohorte);
 
 //Create a new cohorte
 cohorteRouter.post(`/add`, createCohorte);
 
 //Update cohorte by cohorteId
-cohorteRouter.put(`/update/:coachId`, updateCohorte);
+cohorteRouter.put(`/update/:cohorteId`, updateCohorte);
 
 //Delete cohorte by cohorteId
-cohorteRouter.delete(`/delete/:coachId`, deleteCohorte);
+cohorteRouter.delete(`/delete/:cohorteId`, deleteCohorte);
 
 //Delete all cohortes
 cohorteRouter.delete(`/delete`, deleteAllCohortes);

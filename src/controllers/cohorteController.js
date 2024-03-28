@@ -1,3 +1,7 @@
+const { PrismaClient } = require("@prisma/client");
+
+const { Cohorte } = new PrismaClient();
+
 /*
 --------------------------
 Retrieve one cohorte from 
@@ -6,97 +10,143 @@ the database.
 */
 async function getOneCohorte(req, res, next) {
   const { CohorteId } = req.params;
-  let cohorte = findProductById(CohorteId);
-  if (cohorte) {
-    return res.send(cohorte);
+  try {
+    const cohorte = await Cohorte.findUnique({
+      where: {
+        id: +CohorteId,
+      },
+    });
+
+    if (cohorte) {
+      return res.send(cohorte);
+    }
+    return res
+      .status(404)
+      .send(`La cohorte avec l'id : ${CohorteId} n'existe pas`);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("erreur lors de la lecture de vos données");
   }
-  return res
-    .status(404)
-    .send(`La cohorte avec l'id : ${CohorteId} n'existe pas`);
 }
 
 /*
   --------------------------
-  Retrieve all students from 
+  Retrieve all cohortes from 
   the database.
   --------------------------
 */
 async function getAllCohortes(req, res, next) {
-  /* let { number, pages } = req.query;
-  pages = pages || 1;
-  number = number || 10;
-  const firstIndex = (+pages - 1) * number;
-  const lastIndex = +pages * number;
-  const students = "productsData.slice(firstIndex, lastIndex);";
-  return res.send(students); */
-  return res.send("OK");
+  try {
+    const cohortes = await Cohorte.findMany();
+    return res.status(200).send(cohortes);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).send("erreur lors de la lectures de vos donnees");
+  }
 }
 
 /*
     --------------------------
-    Create and save a new product
+    Create and save a new cohorte
     in the database
     --------------------------
 */
 async function createCohorte(req, res, next) {
-  /* const newStudent = req.body;
-  if (newStudent.text) {
-    newStudent.id = productsData.length + 1;
-    productsData.push(newStudent);
-    return res.status(201).send(productsData[productsData.length - 1]);
+  const cohorte = req.body;
+  try {
+    const newCohorte = await Cohorte.create({ data: cohorte });
+    return res.send(newCohorte);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(404)
+      .send("Les données de votre session sont incompletes");
   }
-  return res.status(404).res("Les donnée de votre apprenant sont incomplete"); */
 }
 
 /*
     --------------------------
-    Update a product by the id 
+    Update a cohorte by the id 
     in the request
     --------------------------
 */
 async function updateCohorte(req, res, next) {
-  /* const product = req.body;
-  const { ProductId } = req.params;
-  const ProductIndex = findProductIndex(ProductId);
-  if (ProductIndex < 0) {
-    productsData.push(product);
-    return res.status(201).send(productsData[productsData.length - 1]);
-  } else {
-    productsData[ProductIndex] = product;
-    return res.status(200).send(productsData[ProductIndex]);
-  } */
+  const { cohorteId } = req.params;
+  try {
+    const updateCohorte = await Cohorte.update({
+      where: {
+        id: +cohorteId,
+      },
+      data: {
+        description: "Marketing Digital",
+      },
+    });
+
+    if (updateCohorte.id) {
+      return res.status(201).send(updateCohorte);
+    }
+    return res
+      .status(404)
+      .send(`La cohorte avec l'id : ${cohorteId} n'existe pas`);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Erreur lors de la modifiacation des donnes");
+  }
 }
 
 /*
     --------------------------
-    Delete a product with 
+    Delete a cohorte with 
     the specified id 
     in the request
     --------------------------
 */
 async function deleteCohorte(req, res, next) {
-  /* const { ProductId } = req.params;
-  const productIndex = findProductIndex(ProductId);
-  const product = findProductById(ProductId);
-  if (productIndex < 0) {
+  const { cohorteId } = req.params;
+
+  try {
+    const deleteCohorte = await Cohorte.delete({
+      where: {
+        id: +cohorteId,
+      },
+    });
+
+    if (deleteCohorte.id) {
+      return res.status(200).send(deleteCohorte);
+    }
+
     return res
       .status(404)
-      .send(`L'article avec l'id ${ProductId} n'existe pas`);
-  } else {
-    productsData.splice(productIndex, 1);
-    return res.status(202).send(product);
-  } */
+      .send(`La session avec l'id : ${cohorteId} n'existe pas`);
+  } catch (error) {
+    if (error.code === "P2025") {
+      return res
+        .status(404)
+        .send(`La session avec l'id ${cohorteId}  n'a pas été trouvée.`);
+    } else {
+      console.error(error);
+      return res
+        .status(500)
+        .send("Une erreur est survenue lors de la suppression de la session.");
+    }
+  }
 }
 
 /*
     --------------------------
-    Delete all products from 
+    Delete all cohortes from 
     the database.
     --------------------------
 */
 async function deleteAllCohortes(req, res, next) {
-  /* productsData = [];
-  return res.send("All Products have been deleted"); */
+  try {
+    const deleteCohorte = await Cohorte.deleteMany({});
+
+    return res.status(200).send(deleteCohorte);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Erreur lors de la supression des donnees");
+  }
 }
 
 module.exports = {
