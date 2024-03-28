@@ -9,11 +9,11 @@ the database.
 --------------------------
 */
 async function getOneCohorte(req, res, next) {
-  const { CohorteId } = req.params;
+  const { cohorteId } = req.params;
   try {
     const cohorte = await Cohorte.findUnique({
       where: {
-        id: +CohorteId,
+        id: +cohorteId,
       },
     });
 
@@ -22,7 +22,7 @@ async function getOneCohorte(req, res, next) {
     }
     return res
       .status(404)
-      .send(`La cohorte avec l'id : ${CohorteId} n'existe pas`);
+      .send(`La cohorte avec l'id : ${cohorteId} n'existe pas`);
   } catch (error) {
     console.log(error);
     return res.status(500).send("erreur lors de la lecture de vos données");
@@ -37,7 +37,11 @@ async function getOneCohorte(req, res, next) {
 */
 async function getAllCohortes(req, res, next) {
   try {
-    const cohortes = await Cohorte.findMany();
+    const cohortes = await Cohorte.findMany({
+      include: {
+        Apprenant: {}
+      }
+    });
     return res.status(200).send(cohortes);
   } catch (error) {
     console.log(error);
