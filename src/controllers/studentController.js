@@ -1,3 +1,7 @@
+const { PrismaClient } = require("@prisma/client");
+
+const { Apprenant } = new PrismaClient();
+
 /*
 --------------------------
 Retrieve one student from 
@@ -6,13 +10,23 @@ the database.
 */
 async function getOneStudent(req, res, next) {
   const { StudentId } = req.params;
-  let student = "findProductById(StudentId)";
-  if (student) {
-    return res.send(student);
+  try {
+    const apprenant = await Apprenant.findUnique({
+      where: {
+        id: +StudentId,
+      },
+    });
+
+    if (apprenant.id) {
+      return res.send(apprenant);
+    }
+    return res
+      .status(404)
+      .send(`La cohorte avec l'id : ${StudentId} n'existe pas`);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("erreur lors de la lecture de vos données");
   }
-  return res
-    .status(404)
-    .send(`L'apprenant avec l'id : ${StudentId} n'existe pas`);
 }
 
 /*
@@ -22,50 +36,62 @@ async function getOneStudent(req, res, next) {
   --------------------------
 */
 async function getAllStudents(req, res, next) {
-  /* let { number, pages } = req.query;
-  pages = pages || 1;
-  number = number || 10;
-  const firstIndex = (+pages - 1) * number;
-  const lastIndex = +pages * number;
-  const students = "productsData.slice(firstIndex, lastIndex);";
-  return res.send(students); */
-  return res.send('OK')
+  try {
+    const apprenants = await Apprenant.findMany();
+    return res.status(200).send(apprenants);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).send("erreur lors de la lectures de vos donnees");
+  }
 }
-
 
 /*
     --------------------------
-    Create and save a new product
+    Create and save a new student
     in the database
     --------------------------
 */
 async function createStudent(req, res, next) {
-  /* const newStudent = req.body;
-  if (newStudent.text) {
-    newStudent.id = productsData.length + 1;
-    productsData.push(newStudent);
-    return res.status(201).send(productsData[productsData.length - 1]);
+  const apprenant = req.body;
+  try {
+    const newApprenant = await Apprenant.create({ data: apprenant });
+    return res.send(newApprenant);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(404)
+      .send("Les données de votre apprenant sont incompletes");
   }
-  return res.status(404).res("Les donnée de votre apprenant sont incomplete"); */
 }
 
 /*
     --------------------------
-    Update a product by the id 
+    Update a student by the id 
     in the request
     --------------------------
 */
 async function updateStudent(req, res, next) {
-  /* const product = req.body;
-  const { ProductId } = req.params;
-  const ProductIndex = findProductIndex(ProductId);
-  if (ProductIndex < 0) {
-    productsData.push(product);
-    return res.status(201).send(productsData[productsData.length - 1]);
-  } else {
-    productsData[ProductIndex] = product;
-    return res.status(200).send(productsData[ProductIndex]);
-  } */
+  const { StudentId } = req.params;
+  try {
+    const updateApprenant = await Apprenant.update({
+      where: {
+        id: +StudentId,
+      },
+      data: {
+        description: "Marketing Digital",
+      },
+    });
+
+    if (updateApprenant.id) {
+      return res.status(201).send(updateApprenant);
+    }
+    return res
+      .status(404)
+      .send(`L'apprenant avec l'id : ${StudentId} n'existe pas`);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Erreur lors de la modification des donnes");
+  }
 }
 
 /*
@@ -76,17 +102,34 @@ async function updateStudent(req, res, next) {
     --------------------------
 */
 async function deleteStudent(req, res, next) {
-  /* const { ProductId } = req.params;
-  const productIndex = findProductIndex(ProductId);
-  const product = findProductById(ProductId);
-  if (productIndex < 0) {
+  const { studentId } = req.params;
+
+  try {
+    const deleteApprenant = await Apprenant.delete({
+      where: {
+        id: +studentId,
+      },
+    });
+
+    if (deleteApprenant.id) {
+      return res.status(200).send(deleteApprenant);
+    }
+
     return res
       .status(404)
-      .send(`L'article avec l'id ${ProductId} n'existe pas`);
-  } else {
-    productsData.splice(productIndex, 1);
-    return res.status(202).send(product);
-  } */
+      .send(`La session avec l'id : ${studentId} n'existe pas`);
+  } catch (error) {
+    if (error.code === "P2025") {
+      return res
+        .status(404)
+        .send(`La session avec l'id ${studentId}  n'a pas été trouvée.`);
+    } else {
+      console.error(error);
+      return res
+        .status(500)
+        .send("Une erreur est survenue lors de la suppression de la session.");
+    }
+  }
 }
 
 /*
@@ -96,8 +139,14 @@ async function deleteStudent(req, res, next) {
     --------------------------
 */
 async function deleteAllStudents(req, res, next) {
-  /* productsData = [];
-  return res.send("All Products have been deleted"); */
+  try {
+    const deleteApprenants = await Apprenant.deleteMany({});
+
+    return res.status(200).send(deleteApprenants);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Erreur lors de la supression des donnees");
+  }
 }
 
 module.exports = {
