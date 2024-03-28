@@ -10,22 +10,22 @@ const {
   deleteAllMachines,
 } = require("../controllers/machineController");
 
-//Get all coaches
+//Get all machines
 machineRouter.get(`/`, getAllMachines);
 
-// get one coach by coachId
-machineRouter.get(`/:coachId`, getOneMachine);
+// get one machine by machineId
+machineRouter.get(`/:machineId`, getOneMachine);
 
-//Create a new coach
+//Create a new machine
 machineRouter.post(`/add`, createMachine);
 
-//Update coach by studentId
-machineRouter.put(`/update/:coachId`, updateMachine);
+//Update machine by machineId
+machineRouter.put(`/update/:machineId`, updateMachine);
 
-//Delete coach by studentId
-machineRouter.delete(`/delete/:coachId`, deleteMachine);
+//Delete machine by machineId
+machineRouter.delete(`/delete/:machineId`, deleteMachine);
 
-//Delete all coaches
+//Delete all machines
 machineRouter.delete(`/delete`, deleteAllMachines);
 
 module.exports = machineRouter;

@@ -1,3 +1,7 @@
+const { PrismaClient } = require("@prisma/client");
+
+const { Ordinateur } = new PrismaClient();
+
 /*
 --------------------------
 Retrieve one machines from 
@@ -5,14 +9,24 @@ the database.
 --------------------------
 */
 async function getOneMachine(req, res, next) {
-  const { MachineId } = req.params;
-  let machine = findProductById(MachineId);
-  if (machine) {
-    return res.send(machine);
+  const { machineId } = req.params;
+  try {
+    const machine = await Ordinateur.findUnique({
+      where: {
+        id: +machineId,
+      },
+    });
+
+    if (machine.id) {
+      return res.send(machine);
+    }
+    return res
+      .status(404)
+      .send(`La session avec l'id : ${machineId} n'existe pas`);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("erreur lors de la lecture de vos données");
   }
-  return res
-    .status(404)
-    .send(`La machine avec l'id : ${MachineId} n'existe pas`);
 }
 
 /*
@@ -22,16 +36,14 @@ async function getOneMachine(req, res, next) {
   --------------------------
 */
 async function getAllMachines(req, res, next) {
-  /* let { number, pages } = req.query;
-  pages = pages || 1;
-  number = number || 10;
-  const firstIndex = (+pages - 1) * number;
-  const lastIndex = +pages * number;
-  const students = "productsData.slice(firstIndex, lastIndex);";
-  return res.send(students); */
-  return res.send('OK')
+  try {
+    const machines = await Ordinateur.findMany();
+    return res.status(200).send(machines);
+  } catch (error) {
+    console.log(error);
+    return res.status(404).send("erreur lors de la lectures de vos donnees");
+  }
 }
-
 
 /*
     --------------------------
@@ -40,13 +52,16 @@ async function getAllMachines(req, res, next) {
     --------------------------
 */
 async function createMachine(req, res, next) {
-  /* const newStudent = req.body;
-  if (newStudent.text) {
-    newStudent.id = productsData.length + 1;
-    productsData.push(newStudent);
-    return res.status(201).send(productsData[productsData.length - 1]);
+  const machine = req.body;
+  try {
+    const newMachine = await Ordinateur.create({ data: machine });
+    return res.send(newMachine);
+  } catch (error) {
+    console.log(error);
+    return res
+      .status(404)
+      .send("Les données de votre session sont incompletes");
   }
-  return res.status(404).res("Les donnée de votre apprenant sont incomplete"); */
 }
 
 /*
@@ -56,16 +71,27 @@ async function createMachine(req, res, next) {
     --------------------------
 */
 async function updateMachine(req, res, next) {
-  /* const product = req.body;
-  const { ProductId } = req.params;
-  const ProductIndex = findProductIndex(ProductId);
-  if (ProductIndex < 0) {
-    productsData.push(product);
-    return res.status(201).send(productsData[productsData.length - 1]);
-  } else {
-    productsData[ProductIndex] = product;
-    return res.status(200).send(productsData[ProductIndex]);
-  } */
+  const { machineId } = req.params;
+  try {
+    const updateMachine = await Ordinateur.update({
+      where: {
+        id: +machineId,
+      },
+      data: {
+        modele: "Zenbook 15",
+      },
+    });
+
+    if (updateMachine.id) {
+      return res.status(201).send(updateMachine);
+    }
+    return res
+      .status(404)
+      .send(`La session avec l'id : ${machineId} n'existe pas`);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Erreur lors de la modifiacation des donnes");
+  }
 }
 
 /*
@@ -76,17 +102,33 @@ async function updateMachine(req, res, next) {
     --------------------------
 */
 async function deleteMachine(req, res, next) {
-  /* const { ProductId } = req.params;
-  const productIndex = findProductIndex(ProductId);
-  const product = findProductById(ProductId);
-  if (productIndex < 0) {
+  const { machineId } = req.params;
+  try {
+    const deleteMachine = await Ordinateur.delete({
+      where: {
+        id: +machineId,
+      },
+    });
+
+    if (deleteMachine.id) {
+      return res.status(200).send(deleteMachine);
+    }
+
     return res
       .status(404)
-      .send(`L'article avec l'id ${ProductId} n'existe pas`);
-  } else {
-    productsData.splice(productIndex, 1);
-    return res.status(202).send(product);
-  } */
+      .send(`La session avec l'id : ${machineId} n'existe pas`);
+  } catch (error) {
+    if (error.code === "P2025") {
+      return res
+        .status(404)
+        .send(`La session avec l'id ${machineId}  n'a pas été trouvée.`);
+    } else {
+      console.error(error);
+      return res
+        .status(500)
+        .send("Une erreur est survenue lors de la suppression de la session.");
+    }
+  }
 }
 
 /*
@@ -96,8 +138,14 @@ async function deleteMachine(req, res, next) {
     --------------------------
 */
 async function deleteAllMachines(req, res, next) {
-  /* productsData = [];
-  return res.send("All Products have been deleted"); */
+  try {
+    const deleteMachine = await Ordinateur.deleteMany({});
+
+    return res.status(200).send(deleteMachine);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Erreur lors de la supression des donnees");
+  }
 }
 
 module.exports = {
