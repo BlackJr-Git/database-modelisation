@@ -22,8 +22,9 @@ model Apprenant {
   postnom        String
   date_naissance DateTime
   adresse        String
-  email          String
+  email          String     @unique
   telephone      String
+  password       String     @default("Kadea123")
 }
 
 model Ordinateur {
@@ -59,8 +60,9 @@ model Coach {
   postnom        String
   date_naissance DateTime
   adresse        String
-  email          String
+  email          String     @unique
   telephone      String
+  password       String     @default("Kadea123")
   Affectation    Affectation[]
 }
 

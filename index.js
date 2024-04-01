@@ -8,6 +8,8 @@ const {
   machinesBaseURI,
   cohortesBaseURI,
   sessionsBaseURI,
+  registerBaseURI,
+  loginBaseURI,
 } = require("./src/config/path");
 
 const {
@@ -16,8 +18,9 @@ const {
   machineRouter,
   cohorteRouter,
   sessionRouter,
+  registerRouter,
+  loginRouter,
 } = require("./src/routes/index");
-
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -31,6 +34,8 @@ app.use(json());
 app.use(cors());
 
 // Routes
+app.use(loginBaseURI, loginRouter);
+app.use(registerBaseURI, registerRouter);
 app.use(cohortesBaseURI, cohorteRouter);
 app.use(machinesBaseURI, machineRouter);
 app.use(sessionsBaseURI, sessionRouter);
