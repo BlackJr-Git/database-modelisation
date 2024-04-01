@@ -3,10 +3,10 @@ const loginRouter = Router();
 
 const { loginCoach, loginStudent } = require("../controllers/loginController");
 
-//Get all machines
+//login student
 loginRouter.post(`/apprenants`, loginStudent);
 
-// get one machine by machineId
+// login coach
 loginRouter.post(`/coach`, loginCoach);
 
 module.exports = loginRouter;

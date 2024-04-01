@@ -25,7 +25,7 @@ async function registerCoach(req, res, next) {
 
 /*
     --------------------------
-    Create and save a new coach
+    Create and save a new student
     in the database
     --------------------------
 */

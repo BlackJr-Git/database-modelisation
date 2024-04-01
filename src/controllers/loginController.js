@@ -1,32 +1,45 @@
 const { PrismaClient } = require("@prisma/client");
-const { hashPassword, comparePassword } = require("../utils/hashPassword");
+const { comparePassword } = require("../utils/hashPassword");
+const jwt = require("jsonwebtoken");
 
 const { Coach, Apprenant } = new PrismaClient();
 
 /*
     --------------------------
-    Create and save a new coach
-    in the database
+  Sign in a coach
     --------------------------
 */
 async function loginCoach(req, res, next) {
-  const coach = req.body;
-  coach.password = await hashPassword(coach.password);
+  const user = req.body;
   try {
-    const newCoach = await Coach.create({ data: coach });
-    return res.send(newCoach);
+    const coach = await Coach.findUnique({
+      where: {
+        email: user.email,
+      },
+    });
+
+    if (coach.id) {
+      const isPasswordValid = await comparePassword(
+        user.password,
+        coach.password
+      );
+      if (isPasswordValid) {
+        let token = jwt.sign(coach, process.env.SECRET_PRIVATE_KEY);
+        return res.send(token);
+      }
+
+      return res.send("Mot de passe incorrect ");
+    }
+    return res.status(404).send(`Adresse mail introuvable`);
   } catch (error) {
     console.log(error);
-    return res
-      .status(404)
-      .send("Erreur lors de l'enregistrement de vos donnee");
+    return res.status(500).send("erreur lors de la lecture de vos données");
   }
 }
 
 /*
     --------------------------
-    Create and save a new coach
-    in the database
+    Sign In a student
     --------------------------
 */
 async function loginStudent(req, res, next) {
@@ -49,9 +62,7 @@ async function loginStudent(req, res, next) {
 
       return res.send("Mot de passe incorrect ");
     }
-    return res
-      .status(404)
-      .send(`Adresse mail introuvable`);
+    return res.status(404).send(`Adresse mail introuvable`);
   } catch (error) {
     console.log(error);
     return res.status(500).send("erreur lors de la lecture de vos données");
