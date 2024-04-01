@@ -9,24 +9,26 @@ const {
   deleteAllCoaches
 } = require("../controllers/coachController");
 
+const auth = require("../middlewares/auth")
+
 const coachRouter = Router();
 
 //Get all coaches
-coachRouter.get(`/`, getAllCoaches);
+coachRouter.get(`/`,auth, getAllCoaches);
 
 // get one coach by coachId
-coachRouter.get(`/:coachId`, getOneCoach);
+coachRouter.get(`/:coachId`,auth, getOneCoach);
 
 //Create a new coach
-coachRouter.post(`/add`, createCoach);
+coachRouter.post(`/add`,auth, createCoach);
 
 //Update coach by studentId
-coachRouter.put(`/update/:coachId`, updateCoach);
+coachRouter.put(`/update/:coachId`,auth, updateCoach);
 
 //Delete coach by studentId
-coachRouter.delete(`/delete/:coachId`, deleteCoach);
+coachRouter.delete(`/delete/:coachId`,auth, deleteCoach);
 
 //Delete all coaches
-coachRouter.delete(`/delete`, deleteAllCoaches);
+coachRouter.delete(`/delete`,auth, deleteAllCoaches);
 
 module.exports = coachRouter ;

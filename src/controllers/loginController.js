@@ -1,6 +1,8 @@
 const { PrismaClient } = require("@prisma/client");
 const { comparePassword } = require("../utils/hashPassword");
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
 
 const { Coach, Apprenant } = new PrismaClient();
 
@@ -24,8 +26,12 @@ async function loginCoach(req, res, next) {
         coach.password
       );
       if (isPasswordValid) {
-        let token = jwt.sign(coach, process.env.SECRET_PRIVATE_KEY);
-        return res.send(token);
+        const {password, ...userInfo} = coach
+        let token = jwt.sign(userInfo, process.env.SECRET_PRIVATE_KEY);
+        return res.send({
+          userInfo : userInfo,
+          token : token
+        });
       }
 
       return res.send("Mot de passe incorrect ");
@@ -69,7 +75,12 @@ async function loginStudent(req, res, next) {
   }
 }
 
+async function test(req, res, next) {
+  res.send("test ok");
+}
+
 module.exports = {
   loginCoach: loginCoach,
   loginStudent: loginStudent,
+  test: test,
 };
