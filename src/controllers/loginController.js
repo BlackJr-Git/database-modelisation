@@ -20,17 +20,17 @@ async function loginCoach(req, res, next) {
       },
     });
 
-    if (coach.id) {
+    if (coach) {
       const isPasswordValid = await comparePassword(
         user.password,
         coach.password
       );
       if (isPasswordValid) {
-        const {password, ...userInfo} = coach
+        const { password, ...userInfo } = coach;
         let token = jwt.sign(userInfo, process.env.SECRET_PRIVATE_KEY);
         return res.send({
-          userInfo : userInfo,
-          token : token
+          userInfo: userInfo,
+          token: token,
         });
       }
 

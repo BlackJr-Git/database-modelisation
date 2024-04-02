@@ -12,4 +12,4 @@ registerRouter.post(`/apprenants`, registerStudent);
 //Create new coach
 registerRouter.post(`/coaches`, registerCoach);
 
-module.exports = registerRouter;
+module.exports = registerRouter;     
